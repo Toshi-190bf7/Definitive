@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ferro Velho Tech - Calculadora & Registro ⚙️</title>
+  <style>
+    :root {
+      --bg-color: #12181b;
+      --card-bg: #1e272c;
+      --accent-color: #f39c12;
+      --accent-hover: #d35400;
+      --success-color: #2ecc71;
+      --text-color: #f5f6fa;
+      --text-muted: #a4b0be;
+      --border-color: #2c3a47;
+    }
+
+    * {
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 20px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 650px;
+      background: var(--card-bg);
+      border-radius: 16px;
+      padding: 25px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      border: 1px solid var(--border-color);
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    header h1 {
+      font-size: 26px;
+      color: var(--accent-color);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    header p {
+      color: var(--text-muted);
+      font-size: 14px;
+      margin-top: 5px;
+    }
+
+    /* SISTEMA DE ABAS */
+    .tabs {
+      display: flex;
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: 10px;
+      padding: 5px;
+      margin-bottom: 25px;
+      border: 1px solid var(--border-color);
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 12px;
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-size: 15px;
+      font-weight: bold;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .tab-btn.active {
+      background: var(--accent-color);
+      color: #fff;
+      box-shadow: 0 4px 12px rgba(243, 156, 18, 0.3);
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+      animation: fadeIn 0.4s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(5px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* FORMULÁRIO */
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+
+    select, input {
+      width: 100%;
+      padding: 14px;
+      background-color: rgba(0, 0, 0, 0.3);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      color: #fff;
+      font-size: 16px;
+      outline: none;
+      transition: border-color 0.3s;
+    }
+
+    select:focus, input:focus {
+      border-color: var(--accent-color);
+    }
+
+    /* QUADRO DE PREÇO FINAL */
+    .result-card {
+      background: linear-gradient(135deg, rgba(46, 204, 113, 0.1), rgba(39, 174, 96, 0.2));
+      border: 1px solid var(--success-color);
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    .result-card .label {
+      font-size: 14px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+    }
+
+    .result-card .value {
+      font-size: 36px;
+      font-weight: bold;
+      color: var(--success-color);
+      margin-top: 5px;
+    }
+
+    /* BOTAO DE AÇÃO */
+    .btn-submit {
+      width: 100%;
+      padding: 16px;
+      background: var(--accent-color);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: bold;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.1s;
+      box-shadow: 0 4px 15px rgba(243, 156, 18, 0.2);
+    }
+
+    .btn-submit:hover {
+      background: var(--accent-hover);
+    }
+
+    .btn-submit:active {
+      transform: scale(0.98);
+    }
+
+    /* HISTÓRICO */
+    .history-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .history-card {
+      background: rgba(0, 0, 0, 0.25);
+      border-left: 5px solid var(--accent-color);
+      border-radius: 8px;
+      padding: 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid var(--border-color);
+      border-right: 1px solid var(--border-color);
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .history-info .material {
+      font-size: 18px;
+      font-weight: bold;
+      color: var(--text-color);
+    }
+
+    .history-info .details {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    .history-total {
+      text-align: right;
+    }
+
+    .history-total .price {
+      font-size: 20px;
+      font-weight: bold;
+      color: var(--success-color);
+    }
+
+    .history-total .date {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    .empty-msg {
+      text-align: center;
+      color: var(--text-muted);
+      padding: 30px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <h1>⚙️ Ferro Velho Tech</h1>
+      <p>Sistema de Pesagem e Compra em Tempo Real</p>
+    </header>
+
+    <!-- NAVEGAÇÃO POR ABAS -->
+    <div class="tabs">
+      <button class="tab-btn active" onclick="openTab('vender')">Nova Compra</button>
+      <button class="tab-btn" onclick="openTab('historico')">Histórico de Compras</button>
+    </div>
+
+    <!-- ABA 1: NOVA COMPRA -->
+    <div id="vender" class="tab-content active">
+      <div class="form-group">
+        <label for="material">Selecione o Material:</label>
+        <select id="material" onchange="calcularValores()">
+          <option value="45.00">Cobre — R$ 45,00/Kg</option>
+          <option value="25.00">Metal — R$ 25,00/Kg</option>
+          <option value="10.00">Latinha — R$ 10,00/Kg</option>
+          <option value="1.00">Pet — R$ 1,00/Kg</option>
+          <option value="0.50">Pad — R$ 0,50/Kg</option>
+          <option value="0.40">Pp — R$ 0,40/Kg</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="peso">Peso (em Gramas — ex: 850 para 850g):</label>
+        <input type="number" id="peso" placeholder="Digite o peso em gramas..." oninput="calcularValores()">
+      </div>
+
+      <div class="result-card">
+        <div class="label">Valor Final a Pagar</div>
+        <div class="value">R$ <span id="valorFinal">0,00</span></div>
+      </div>
+
+      <button class="btn-submit" onclick="salvarVenda()">Registrar no Firebase 🔥</button>
+    </div>
+
+    <!-- ABA 2: HISTÓRICO DE COMPRAS -->
+    <div id="historico" class="tab-content">
+      <div id="listaHistorico" class="history-list">
+        <div class="empty-msg">Carregando dados do Firebase...</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCRIPT DO FIREBASE (Colocado logo abaixo do <body>) -->
+  <script type="module">
+    // Importações do SDK do Firebase
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-analytics.js";
+    import { getFirestore, collection, addDoc, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+
+    // Configuração da sua conta do Firebase
+    const firebaseConfig = {
+      apiKey: "AIzaSyCZ6INThJhyL3T2Po-F_G45SD-aINTO-ig",
+      authDomain: "ferro-velho-b94d2.firebaseapp.com",
+      projectId: "ferro-velho-b94d2",
+      storageBucket: "ferro-velho-b94d2.firebasestorage.app",
+      messagingSenderId: "896739684073",
+      appId: "1:896739684073:web:bca7048bf6c7ce05eeca78",
+      measurementId: "G-4EKL446ER5"
+    };
+
+    // Inicialização do Firebase
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+    const db = getFirestore(app);
+
+    // Função de Cálculo em tempo real
+    window.calcularValores = function() {
+      const precoPorKg = parseFloat(document.getElementById('material').value);
+      const pesoGramas = parseFloat(document.getElementById('peso').value);
+
+      if (isNaN(pesoGramas) || pesoGramas <= 0) {
+        document.getElementById('valorFinal').innerText = "0,00";
+        return 0;
+      }
+
+      // Converte Gramas para Kg (ex: 850g / 1000 = 0.85Kg)
+      const pesoKg = pesoGramas / 1000;
+      const total = pesoKg * precoPorKg;
+
+      document.getElementById('valorFinal').innerText = total.toFixed(2).replace('.', ',');
+      return total;
+    }
+
+    // Função para Salvar a Compra no Firebase
+    window.salvarVenda = async function() {
+      const selectMaterial = document.getElementById('material');
+      const nomeMaterial = selectMaterial.options[selectMaterial.selectedIndex].text.split(' — ')[0];
+      const precoPorKg = parseFloat(selectMaterial.value);
+      const pesoGramas = parseFloat(document.getElementById('peso').value);
+      const valorTotal = window.calcularValores();
+
+      if (!pesoGramas || pesoGramas <= 0) {
+        alert("Digite o peso em gramas antes de salvar, meu consagrado!");
+        return;
+      }
+
+      try {
+        await addDoc(collection(db, "vendas"), {
+          material: nomeMaterial,
+          pesoGramas: pesoGramas,
+          precoPorKg: precoPorKg,
+          valorTotal: valorTotal,
+          dataCriacao: new Date(),
+          dataFormatada: new Date().toLocaleString("pt-BR")
+        });
+
+        alert("Compra registrada com sucesso no banco de dados! 🚀");
+        document.getElementById('peso').value = '';
+        document.getElementById('valorFinal').innerText = "0,00";
+      } catch (e) {
+        console.error("Erro ao salvar no Firebase: ", e);
+        alert("Ops, erro ao salvar. Verifique se as Regras do Firestore estão liberadas!");
+      }
+    }
+
+    // Escutar atualizações do histórico no Firebase em Tempo Real
+    const q = query(collection(db, "vendas"));
+    onSnapshot(q, (snapshot) => {
+      const listaContainer = document.getElementById('listaHistorico');
+      listaContainer.innerHTML = "";
+
+      if (snapshot.empty) {
+        listaContainer.innerHTML = '<div class="empty-msg">Nenhuma compra registrada ainda.</div>';
+        return;
+      }
+
+      snapshot.forEach((doc) => {
+        const item = doc.data();
+        const card = document.createElement('div');
+        card.className = 'history-card';
+        card.innerHTML = `
+          <div class="history-info">
+            <div class="material">${item.material}</div>
+            <div class="details">
+              ${item.pesoGramas}g (${(item.pesoGramas / 1000).toFixed(3)} Kg) • R$ ${item.precoPorKg.toFixed(2).replace('.', ',')}/Kg
+            </div>
+          </div>
+          <div class="history-total">
+            <div class="price">R$ ${item.valorTotal.toFixed(2).replace('.', ',')}</div>
+            <div class="date">${item.dataFormatada || 'Data N/I'}</div>
+          </div>
+        `;
+        listaContainer.appendChild(card);
+      });
+    });
+
+    // Lógica de alternar entre as abas
+    window.openTab = function(tabName) {
+      const contents = document.querySelectorAll('.tab-content');
+      const buttons = document.querySelectorAll('.tab-btn');
+
+      contents.forEach(c => c.classList.remove('active'));
+      buttons.forEach(b => b.classList.remove('active'));
+
+      document.getElementById(tabName).classList.add('active');
+      event.currentTarget.classList.add('active');
+    }
+  </script>
+</body>
+</html>
