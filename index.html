@@ -3,17 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ferro Velho Tech - Calculadora & Registro ⚙️</title>
+  <title>Ferro Velho Pro - Sistema de Pesagem ⚙️</title>
   <style>
     :root {
-      --bg-color: #12181b;
-      --card-bg: #1e272c;
-      --accent-color: #f39c12;
+      --bg-color: #0f171e;
+      --card-bg: #1b2631;
+      --accent-color: #e67e22;
       --accent-hover: #d35400;
       --success-color: #2ecc71;
-      --text-color: #f5f6fa;
-      --text-muted: #a4b0be;
-      --border-color: #2c3a47;
+      --text-color: #ecf0f1;
+      --text-muted: #95a5a6;
+      --border-color: #2c3e50;
     }
 
     * {
@@ -39,7 +39,7 @@
       background: var(--card-bg);
       border-radius: 16px;
       padding: 25px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
       border: 1px solid var(--border-color);
     }
 
@@ -68,7 +68,7 @@
     /* SISTEMA DE ABAS */
     .tabs {
       display: flex;
-      background: rgba(0, 0, 0, 0.2);
+      background: rgba(0, 0, 0, 0.3);
       border-radius: 10px;
       padding: 5px;
       margin-bottom: 25px;
@@ -91,7 +91,7 @@
     .tab-btn.active {
       background: var(--accent-color);
       color: #fff;
-      box-shadow: 0 4px 12px rgba(243, 156, 18, 0.3);
+      box-shadow: 0 4px 12px rgba(230, 126, 34, 0.4);
     }
 
     .tab-content {
@@ -125,7 +125,7 @@
     select, input {
       width: 100%;
       padding: 14px;
-      background-color: rgba(0, 0, 0, 0.3);
+      background-color: rgba(0, 0, 0, 0.4);
       border: 1px solid var(--border-color);
       border-radius: 8px;
       color: #fff;
@@ -140,7 +140,7 @@
 
     /* QUADRO DE PREÇO FINAL */
     .result-card {
-      background: linear-gradient(135deg, rgba(46, 204, 113, 0.1), rgba(39, 174, 96, 0.2));
+      background: linear-gradient(135deg, rgba(46, 204, 113, 0.1), rgba(39, 174, 96, 0.25));
       border: 1px solid var(--success-color);
       border-radius: 12px;
       padding: 20px;
@@ -161,6 +161,37 @@
       margin-top: 5px;
     }
 
+    /* CARD DE TOTAL GERAL (NOVIDADE) */
+    .total-summary-card {
+      background: linear-gradient(135deg, rgba(230, 126, 34, 0.15), rgba(211, 84, 0, 0.3));
+      border: 1px solid var(--accent-color);
+      border-radius: 12px;
+      padding: 18px;
+      text-align: center;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .total-summary-card .summary-title {
+      font-size: 13px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 6px;
+    }
+
+    .total-summary-card .summary-value {
+      font-size: 32px;
+      font-weight: bold;
+      color: var(--accent-color);
+    }
+
+    .total-summary-card .summary-subtext {
+      font-size: 13px;
+      color: var(--text-color);
+      margin-top: 4px;
+    }
+
     /* BOTAO DE AÇÃO */
     .btn-submit {
       width: 100%;
@@ -174,7 +205,7 @@
       text-transform: uppercase;
       cursor: pointer;
       transition: background 0.3s, transform 0.1s;
-      box-shadow: 0 4px 15px rgba(243, 156, 18, 0.2);
+      box-shadow: 0 4px 15px rgba(230, 126, 34, 0.3);
     }
 
     .btn-submit:hover {
@@ -193,7 +224,7 @@
     }
 
     .history-card {
-      background: rgba(0, 0, 0, 0.25);
+      background: rgba(0, 0, 0, 0.3);
       border-left: 5px solid var(--accent-color);
       border-radius: 8px;
       padding: 15px;
@@ -244,11 +275,11 @@
 
   <div class="container">
     <header>
-      <h1>⚙️ Ferro Velho Tech</h1>
-      <p>Sistema de Pesagem e Compra em Tempo Real</p>
+      <h1>⚙️ Ferro Velho Pro</h1>
+      <p>Calculadora Automática & Registro de Vendas</p>
     </header>
 
-    <!-- NAVEGAÇÃO POR ABAS -->
+    <!-- ABAS -->
     <div class="tabs">
       <button class="tab-btn active" onclick="openTab('vender')">Nova Compra</button>
       <button class="tab-btn" onclick="openTab('historico')">Histórico de Compras</button>
@@ -269,8 +300,8 @@
       </div>
 
       <div class="form-group">
-        <label for="peso">Peso (em Gramas — ex: 850 para 850g):</label>
-        <input type="number" id="peso" placeholder="Digite o peso em gramas..." oninput="calcularValores()">
+        <label for="peso">Peso em Gramas (ex: 850 para 850g):</label>
+        <input type="number" id="peso" placeholder="Digite as gramas..." oninput="calcularValores()">
       </div>
 
       <div class="result-card">
@@ -278,41 +309,48 @@
         <div class="value">R$ <span id="valorFinal">0,00</span></div>
       </div>
 
-      <button class="btn-submit" onclick="salvarVenda()">Registrar no Firebase 🔥</button>
+      <button class="btn-submit" onclick="salvarVenda()">Salvar no Firebase 🔥</button>
     </div>
 
     <!-- ABA 2: HISTÓRICO DE COMPRAS -->
     <div id="historico" class="tab-content">
+      
+      <!-- CARD DE RESUMO DO TOTAL ACUMULADO -->
+      <div class="total-summary-card">
+        <div class="summary-title">📊 Total de Compras Acumulado</div>
+        <div class="summary-value">R$ <span id="somaGeralValor">0,00</span></div>
+        <div class="summary-subtext">Peso Total Comprado: <strong><span id="somaGeralPeso">0,000</span> Kg</strong></div>
+      </div>
+
       <div id="listaHistorico" class="history-list">
         <div class="empty-msg">Carregando dados do Firebase...</div>
       </div>
     </div>
   </div>
 
-  <!-- SCRIPT DO FIREBASE (Colocado logo abaixo do <body>) -->
+  <!-- SCRIPT DO FIREBASE -->
   <script type="module">
-    // Importações do SDK do Firebase
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
     import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-analytics.js";
-    import { getFirestore, collection, addDoc, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+    import { getFirestore, collection, addDoc, onSnapshot, query } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
 
-    // Configuração da sua conta do Firebase
+    // Suas credenciais do Firebase
     const firebaseConfig = {
-      apiKey: "AIzaSyCZ6INThJhyL3T2Po-F_G45SD-aINTO-ig",
-      authDomain: "ferro-velho-b94d2.firebaseapp.com",
-      projectId: "ferro-velho-b94d2",
-      storageBucket: "ferro-velho-b94d2.firebasestorage.app",
-      messagingSenderId: "896739684073",
-      appId: "1:896739684073:web:bca7048bf6c7ce05eeca78",
-      measurementId: "G-4EKL446ER5"
+      apiKey: "AIzaSyDeM2BL1e-37snGly-wOxHFln6d0bfUkj4",
+      authDomain: "ferrovelhonew-65bf2.firebaseapp.com",
+      projectId: "ferrovelhonew-65bf2",
+      storageBucket: "ferrovelhonew-65bf2.firebasestorage.app",
+      messagingSenderId: "785677147734",
+      appId: "1:785677147734:web:1cea275e629e65a8c7e5f7",
+      measurementId: "G-ZK3L649B04"
     };
 
-    // Inicialização do Firebase
+    // Inicializa
     const app = initializeApp(firebaseConfig);
     const analytics = getAnalytics(app);
     const db = getFirestore(app);
 
-    // Função de Cálculo em tempo real
+    // Função para calcular o preço da compra atual
     window.calcularValores = function() {
       const precoPorKg = parseFloat(document.getElementById('material').value);
       const pesoGramas = parseFloat(document.getElementById('peso').value);
@@ -322,7 +360,6 @@
         return 0;
       }
 
-      // Converte Gramas para Kg (ex: 850g / 1000 = 0.85Kg)
       const pesoKg = pesoGramas / 1000;
       const total = pesoKg * precoPorKg;
 
@@ -330,7 +367,7 @@
       return total;
     }
 
-    // Função para Salvar a Compra no Firebase
+    // Função para salvar no Firestore
     window.salvarVenda = async function() {
       const selectMaterial = document.getElementById('material');
       const nomeMaterial = selectMaterial.options[selectMaterial.selectedIndex].text.split(' — ')[0];
@@ -349,32 +386,41 @@
           pesoGramas: pesoGramas,
           precoPorKg: precoPorKg,
           valorTotal: valorTotal,
-          dataCriacao: new Date(),
           dataFormatada: new Date().toLocaleString("pt-BR")
         });
 
-        alert("Compra registrada com sucesso no banco de dados! 🚀");
+        alert("Compra registrada com SUCESSO no banco de dados! 🚀");
         document.getElementById('peso').value = '';
         document.getElementById('valorFinal').innerText = "0,00";
       } catch (e) {
         console.error("Erro ao salvar no Firebase: ", e);
-        alert("Ops, erro ao salvar. Verifique se as Regras do Firestore estão liberadas!");
+        alert("Ops! Lembre de criar o banco 'Firestore Database' e liberar as regras com 'allow read, write: if true;' lá no painel do Firebase!");
       }
     }
 
-    // Escutar atualizações do histórico no Firebase em Tempo Real
+    // Escutar histórico do Firestore em tempo real e calcular o TOTAL
     const q = query(collection(db, "vendas"));
     onSnapshot(q, (snapshot) => {
       const listaContainer = document.getElementById('listaHistorico');
       listaContainer.innerHTML = "";
 
+      let acumuladoDinheiro = 0;
+      let acumuladoPesoGramas = 0;
+
       if (snapshot.empty) {
         listaContainer.innerHTML = '<div class="empty-msg">Nenhuma compra registrada ainda.</div>';
+        document.getElementById('somaGeralValor').innerText = "0,00";
+        document.getElementById('somaGeralPeso').innerText = "0,000";
         return;
       }
 
       snapshot.forEach((doc) => {
         const item = doc.data();
+        
+        // Somando o dinheiro e peso de cada item
+        acumuladoDinheiro += (item.valorTotal || 0);
+        acumuladoPesoGramas += (item.pesoGramas || 0);
+
         const card = document.createElement('div');
         card.className = 'history-card';
         card.innerHTML = `
@@ -385,15 +431,19 @@
             </div>
           </div>
           <div class="history-total">
-            <div class="price">R$ ${item.valorTotal.toFixed(2).replace('.', ',')}</div>
+            <div class="price">R$ ${(item.valorTotal || 0).toFixed(2).replace('.', ',')}</div>
             <div class="date">${item.dataFormatada || 'Data N/I'}</div>
           </div>
         `;
         listaContainer.appendChild(card);
       });
+
+      // Atualiza o painel de TOTAL ACUMULADO
+      document.getElementById('somaGeralValor').innerText = acumuladoDinheiro.toFixed(2).replace('.', ',');
+      document.getElementById('somaGeralPeso').innerText = (acumuladoPesoGramas / 1000).toFixed(3).replace('.', ',');
     });
 
-    // Lógica de alternar entre as abas
+    // Função de Alternar Abas
     window.openTab = function(tabName) {
       const contents = document.querySelectorAll('.tab-content');
       const buttons = document.querySelectorAll('.tab-btn');
